@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"strconv"
 )
 
@@ -12,6 +14,12 @@ func main() {
 		value := <-c1
 		fmt.Println(value)
 	}
+	helloHandler := func(w http.ResponseWriter, req *http.Request) {
+		io.WriteString(w, "Hello")
+
+	}
+	http.HandleFunc("/hello", helloHandler)
+	http.ListenAndServe(":8081", nil)
 }
 
 func addToChan(c1 chan string) {
